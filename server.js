@@ -1,53 +1,35 @@
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
-const crypto = require('crypto');
 
 const app = express();
-const PORT = 3000;
-
-// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
 // =============================================
-// BANCO DE DADOS DAS KEYS (em memória + JSON)
+// BANCO DE DADOS EM MEMÓRIA
 // =============================================
-const KEYS_FILE = 'keys.json';
-
-// Carrega keys do arquivo ou cria novo
-let keysDB = {};
-if (fs.existsSync(KEYS_FILE)) {
-    keysDB = JSON.parse(fs.readFileSync(KEYS_FILE));
-} else {
-    // Keys iniciais
-    keysDB = {
-        "CTC-FREE-2024": {
-            tipo: "free",
-            validade: "2026-12-31",
-            usuario: "demonstracao",
-            ativo: true,
-            criadaEm: new Date().toISOString()
-        },
-        "CTC-VIP-2024": {
-            tipo: "vip",
-            validade: "2027-12-31",
-            usuario: "membro_vip",
-            ativo: true,
-            criadaEm: new Date().toISOString()
-        }
-    };
-    salvarKeys();
-}
-
-function salvarKeys() {
-    fs.writeFileSync(KEYS_FILE, JSON.stringify(keysDB, null, 2));
-}
+let keysDB = {
+    "CTC-FREE-2024": {
+        tipo: "free",
+        validade: "2026-12-31",
+        usuario: "demonstracao",
+        ativo: true,
+        criadaEm: new Date().toISOString()
+    },
+    "CTC-VIP-2024": {
+        tipo: "vip",
+        validade: "2027-12-31",
+        usuario: "membro_vip",
+        ativo: true,
+        criadaEm: new Date().toISOString()
+    }
+};
 
 // =============================================
 // FUNÇÕES AUXILIARES
 // =============================================
+
 function gerarKey(tamanho = 4) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let key = 'CTC-';
@@ -59,8 +41,8 @@ function gerarKey(tamanho = 4) {
 
 function calcularValidade(dias) {
     const data = new Date();
-    data.setDate(data.getDate() + dias);
-    return data.toISOString().split('T')[0]; // YYYY-MM-DD
+    data.setDate(data.getDate() + parseInt(dias));
+    return data.toISOString().split('T')[0];
 }
 
 function isKeyValida(key) {
@@ -80,144 +62,184 @@ function isKeyValida(key) {
 // ROTAS DA API
 // =============================================
 
-// 1. Verificar Key
+// 1. VERIFICAR KEY
 app.post('/api/verify', (req, res) => {
-    const { key } = req.body;
-    
-    if (!key) {
-        return res.status(400).json({ 
-            success: false, 
-            message: 'Key não fornecida' 
+    try {
+        const { key } = req.body;
+        
+        if (!key) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Key não fornecida' 
+            });
+        }
+        
+        const resultado = isKeyValida(key);
+        
+        if (resultado.valida) {
+            res.json({
+                success: true,
+                message: resultado.msg,
+                tipo: resultado.tipo,
+                key: key
+            });
+        } else {
+            res.json({
+                success: false,
+                message: resultado.msg
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Erro interno: ' + error.message
         });
     }
-    
-    const resultado = isKeyValida(key);
-    
-    if (resultado.valida) {
+});
+
+// 2. GERAR KEY
+app.post('/api/generate', (req, res) => {
+    try {
+        const { tipo, dias, usuario } = req.body;
+        
+        if (!tipo || !dias) {
+            return res.status(400).json({
+                success: false,
+                message: 'Tipo e dias são obrigatórios'
+            });
+        }
+        
+        let novaKey = gerarKey(4);
+        while (keysDB[novaKey]) {
+            novaKey = gerarKey(4);
+        }
+        
+        keysDB[novaKey] = {
+            tipo: tipo,
+            validade: calcularValidade(parseInt(dias)),
+            usuario: usuario || 'anonimo',
+            ativo: true,
+            criadaEm: new Date().toISOString()
+        };
+        
         res.json({
             success: true,
-            message: resultado.msg,
-            tipo: resultado.tipo,
-            key: key
+            key: novaKey,
+            info: keysDB[novaKey]
         });
-    } else {
-        res.json({
+        
+    } catch (error) {
+        console.error('Erro ao gerar key:', error);
+        res.status(500).json({
             success: false,
-            message: resultado.msg
+            message: 'Erro ao gerar key: ' + error.message
         });
     }
 });
 
-// 2. Gerar nova Key
-app.post('/api/generate', (req, res) => {
-    const { tipo, dias, usuario } = req.body;
-    
-    if (!tipo || !dias) {
-        return res.status(400).json({
-            success: false,
-            message: 'Tipo e dias são obrigatórios'
-        });
-    }
-    
-    let novaKey = gerarKey(4);
-    
-    // Evita colisão
-    while (keysDB[novaKey]) {
-        novaKey = gerarKey(4);
-    }
-    
-    keysDB[novaKey] = {
-        tipo: tipo,
-        validade: calcularValidade(parseInt(dias)),
-        usuario: usuario || 'anonimo',
-        ativo: true,
-        criadaEm: new Date().toISOString()
-    };
-    
-    salvarKeys();
-    
-    res.json({
-        success: true,
-        key: novaKey,
-        info: keysDB[novaKey]
-    });
-});
-
-// 3. Listar todas as keys
+// 3. LISTAR KEYS
 app.get('/api/keys', (req, res) => {
-    const keysList = Object.entries(keysDB).map(([key, info]) => ({
-        key: key,
-        ...info
-    }));
-    
-    res.json({
-        success: true,
-        keys: keysList
-    });
-});
-
-// 4. Desativar key
-app.post('/api/deactivate', (req, res) => {
-    const { key } = req.body;
-    
-    if (!keysDB[key]) {
-        return res.status(404).json({
+    try {
+        const keysList = Object.entries(keysDB).map(([key, info]) => ({
+            key: key,
+            ...info
+        }));
+        
+        res.json({
+            success: true,
+            keys: keysList
+        });
+    } catch (error) {
+        res.status(500).json({
             success: false,
-            message: 'Key não encontrada'
+            message: 'Erro ao listar keys'
         });
     }
-    
-    keysDB[key].ativo = false;
-    salvarKeys();
-    
-    res.json({
-        success: true,
-        message: 'Key desativada com sucesso'
-    });
 });
 
-// 5. Ativar key
-app.post('/api/activate', (req, res) => {
-    const { key } = req.body;
-    
-    if (!keysDB[key]) {
-        return res.status(404).json({
-            success: false,
-            message: 'Key não encontrada'
-        });
-    }
-    
-    keysDB[key].ativo = true;
-    salvarKeys();
-    
-    res.json({
-        success: true,
-        message: 'Key ativada com sucesso'
-    });
-});
-
-// 6. Estatísticas
+// 4. ESTATÍSTICAS
 app.get('/api/stats', (req, res) => {
-    const total = Object.keys(keysDB).length;
-    const ativas = Object.values(keysDB).filter(k => k.ativo).length;
-    const expiradas = Object.values(keysDB).filter(k => {
+    try {
+        const total = Object.keys(keysDB).length;
+        const ativas = Object.values(keysDB).filter(k => k.ativo).length;
         const hoje = new Date().toISOString().split('T')[0];
-        return hoje > k.validade;
-    }).length;
-    
-    res.json({
-        success: true,
-        stats: {
-            total,
-            ativas,
-            expiradas,
-            inativas: total - ativas
-        }
-    });
+        const expiradas = Object.values(keysDB).filter(k => hoje > k.validade).length;
+        
+        res.json({
+            success: true,
+            stats: {
+                total,
+                ativas,
+                expiradas,
+                inativas: total - ativas
+            }
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Erro ao carregar stats'
+        });
+    }
 });
 
-// Iniciar servidor
-app.listen(PORT, () => {
-    console.log(`🚀 CTC HUB API rodando em http://localhost:${PORT}`);
-    console.log(`📊 Total de keys: ${Object.keys(keysDB).length}`);
+// 5. DESATIVAR KEY
+app.post('/api/deactivate', (req, res) => {
+    try {
+        const { key } = req.body;
+        
+        if (!keysDB[key]) {
+            return res.status(404).json({
+                success: false,
+                message: 'Key não encontrada'
+            });
+        }
+        
+        keysDB[key].ativo = false;
+        
+        res.json({
+            success: true,
+            message: 'Key desativada com sucesso'
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Erro ao desativar key'
+        });
+    }
 });
+
+// 6. ATIVAR KEY
+app.post('/api/activate', (req, res) => {
+    try {
+        const { key } = req.body;
+        
+        if (!keysDB[key]) {
+            return res.status(404).json({
+                success: false,
+                message: 'Key não encontrada'
+            });
+        }
+        
+        keysDB[key].ativo = true;
+        
+        res.json({
+            success: true,
+            message: 'Key ativada com sucesso'
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Erro ao ativar key'
+        });
+    }
+});
+
+// ROTA RAIZ
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
+
+// =============================================
+// EXPORTAR PARA VERCEL
+// =============================================
+module.exports = app;
