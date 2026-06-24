@@ -4,12 +4,14 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
 
 // =============================================
-// BANCO DE DADOS EM MEMÓRIA
+// BANCO DE DADOS EM MEMÓRIA (NÃO USA ARQUIVO)
 // =============================================
-let keysDB = {
+let keysDB = {};
+
+// KEYS PADRÃO (já vem com o servidor)
+const defaultKeys = {
     "CTC-FREE-2024": {
         tipo: "free",
         validade: "2026-12-31",
@@ -25,6 +27,9 @@ let keysDB = {
         criadaEm: new Date().toISOString()
     }
 };
+
+// Carrega as keys padrão
+keysDB = defaultKeys;
 
 // =============================================
 // FUNÇÕES AUXILIARES
@@ -234,7 +239,9 @@ app.post('/api/activate', (req, res) => {
     }
 });
 
+// =============================================
 // ROTA RAIZ
+// =============================================
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
