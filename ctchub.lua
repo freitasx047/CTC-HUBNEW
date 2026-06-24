@@ -1,3 +1,123 @@
+-- =============================================
+-- SISTEMA DE KEYS COM API
+-- =============================================
+
+local API_URL = "https://ctchubpaneladminro.vercel.app/api"
+_G.CTC_Ativo = false
+_G.CTC_Tipo = "free"
+_G.CTC_Key = ""
+
+local function RequestAPI(method, endpoint, data)
+    local url = API_URL .. endpoint
+    local body = data and game:GetService("HttpService"):JSONEncode(data) or ""
+    
+    local response = nil
+    if syn and syn.request then
+        response = syn.request({
+            Url = url,
+            Method = method,
+            Headers = {["Content-Type"] = "application/json"},
+            Body = body
+        })
+    elseif request then
+        response = request({
+            Url = url,
+            Method = method,
+            Headers = {["Content-Type"] = "application/json"},
+            Body = body
+        })
+    else
+        return nil
+    end
+    
+    if response and response.Success then
+        return game:GetService("HttpService"):JSONDecode(response.Body)
+    end
+    return nil
+end
+
+local function VerificarKey(key)
+    local result = RequestAPI("POST", "/verify", { key = key })
+    if result and result.success then
+        return true, result.tipo, result.message
+    end
+    return false, nil, result and result.message or "❌ Key inválida!"
+end
+
+local bearlib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Jadelly/Ui/refs/heads/main/NewZynLib"))()
+
+if not bearlib then
+    print("❌ Erro ao carregar UI!")
+    return
+end
+
+local ActivationWindow = bearlib:MakeWindow({
+    Title = "🔐 CTC HUB",
+    SubTitle = "Ative sua key para continuar",
+    SaveFolder = true
+})
+
+local ActivationTab = ActivationWindow:MakeTab({
+    Title = "Ativação",
+    Icon = "rbxassetid://10747376931"
+})
+
+ActivationTab:AddTextBox({
+    Name = "🔑 Digite sua Key",
+    Placeholder = "CTC-XXXX-YYYY",
+    ClearOnFocus = true,
+    Callback = function(value)
+        _G.CTC_InputKey = value
+    end
+})
+
+ActivationTab:AddButton({
+    Name = "✅ Ativar Key",
+    Callback = function()
+        if not _G.CTC_InputKey or _G.CTC_InputKey == "" then
+            bearlib:Notify({
+                Title = "⚠️ Erro",
+                Message = "Digite uma key primeiro!",
+                Duration = 3
+            })
+            return
+        end
+        
+        local valida, tipo, mensagem = VerificarKey(_G.CTC_InputKey)
+        
+        if valida then
+            _G.CTC_Ativo = true
+            _G.CTC_Tipo = tipo
+            _G.CTC_Key = _G.CTC_InputKey
+            
+            bearlib:Notify({
+                Title = "✅ Ativado!",
+                Message = "Tipo: " .. string.upper(tipo),
+                Duration = 5
+            })
+            
+            ActivationWindow:Destroy()
+            print("🚀 CTC HUB ativado!")
+            print("📌 Tipo: " .. _G.CTC_Tipo)
+            print("🔑 Key: " .. _G.CTC_Key)
+            
+            -- CONTINUA O SCRIPT AQUI
+            IniciarScript()
+            
+        else
+            bearlib:Notify({
+                Title = "❌ Erro",
+                Message = mensagem,
+                Duration = 4
+            })
+        end
+    end
+})
+
+function IniciarScript()
+    -- SEU CÓDIGO VAI AQUI DENTRO
+    -- =============================
+
 local Services = setmetatable({}, {
     __index = function(self, serviceName)
         local service = game:GetService(serviceName)
