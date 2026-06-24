@@ -12755,3 +12755,26 @@ v12:AddToggle({
         end)
     end
 })
+
+
+-- =============================================
+-- FIM DO SISTEMA DE KEYS
+-- =============================================
+
+-- Verifica se o script foi ativado
+if _G.CTC_Ativo then
+    print("✅ CTC HUB carregado com sucesso!")
+else
+    print("⏳ Aguardando ativação da key...")
+end
+
+-- Comando para ver status
+game:GetService("Players").LocalPlayer.Chatted:Connect(function(msg)
+    if msg:lower() == "/ctcstatus" then
+        if _G.CTC_Ativo then
+            print("✅ CTC HUB ativo! Tipo: " .. _G.CTC_Tipo)
+        else
+            print("❌ CTC HUB inativo!")
+        end
+    end
+end)
