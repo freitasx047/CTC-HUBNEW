@@ -1,0 +1,16 @@
+{
+  "CTC-FREE-2024": {
+    "tipo": "free",
+    "validade": "2026-12-31",
+    "usuario": "demonstracao",
+    "ativo": true,
+    "criadaEm": "2026-01-01T00:00:00.000Z"
+  },
+  "CTC-VIP-2024": {
+    "tipo": "vip",
+    "validade": "2027-12-31",
+    "usuario": "membro_vip",
+    "ativo": true,
+    "criadaEm": "2026-01-01T00:00:00.000Z"
+  }
+}
