@@ -24,7 +24,6 @@
             margin: 0 auto;
         }
 
-        /* Header */
         .header {
             text-align: center;
             padding: 30px 0;
@@ -37,7 +36,6 @@
             background: linear-gradient(45deg, #f093fb, #f5576c, #4facfe);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: none;
         }
 
         .header p {
@@ -46,26 +44,18 @@
             margin-top: 10px;
         }
 
-        /* Stats Cards */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
 
         .stat-card {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             padding: 20px;
             text-align: center;
-            transition: transform 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
         }
 
         .stat-number {
@@ -77,43 +67,35 @@
         .stat-label {
             color: #aaa;
             margin-top: 5px;
-            font-size: 0.9rem;
         }
 
-        /* Formulários */
         .card {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 20px;
         }
 
         .card h2 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
             color: #4facfe;
+            margin-bottom: 15px;
         }
 
         .form-group {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
-            align-items: center;
         }
 
         .form-group input,
         .form-group select {
-            padding: 12px 18px;
+            padding: 12px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.05);
             color: #fff;
-            font-size: 1rem;
             flex: 1;
             min-width: 150px;
-            transition: border-color 0.3s;
         }
 
         .form-group input:focus,
@@ -130,7 +112,6 @@
             padding: 12px 25px;
             border: none;
             border-radius: 10px;
-            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -143,9 +124,10 @@
             box-shadow: 0 5px 20px rgba(79, 172, 254, 0.3);
         }
 
-        .btn-primary {
-            background: linear-gradient(45deg, #4facfe, #00f2fe);
-            color: #fff;
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .btn-success {
@@ -153,13 +135,13 @@
             color: #fff;
         }
 
-        .btn-danger {
-            background: linear-gradient(45deg, #f093fb, #f5576c);
+        .btn-primary {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
             color: #fff;
         }
 
-        .btn-warning {
-            background: linear-gradient(45deg, #f6d365, #fda085);
+        .btn-danger {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
             color: #fff;
         }
 
@@ -169,7 +151,6 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* Tabela */
         .table-container {
             overflow-x: auto;
         }
@@ -182,15 +163,14 @@
 
         th {
             text-align: left;
-            padding: 12px 15px;
+            padding: 12px;
             background: rgba(79, 172, 254, 0.1);
-            border-bottom: 2px solid rgba(79, 172, 254, 0.2);
-            font-weight: 600;
             color: #4facfe;
+            border-bottom: 2px solid rgba(79, 172, 254, 0.2);
         }
 
         td {
-            padding: 12px 15px;
+            padding: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
@@ -220,36 +200,6 @@
             color: #f6d365;
         }
 
-        /* Toast/Notification */
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            padding: 15px 25px;
-            border-radius: 10px;
-            color: #fff;
-            font-weight: 600;
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-            z-index: 999;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast-success {
-            background: linear-gradient(45deg, #43e97b, #38f9d7);
-        }
-
-        .toast-error {
-            background: linear-gradient(45deg, #f093fb, #f5576c);
-        }
-
-        .toast-info {
-            background: linear-gradient(45deg, #4facfe, #00f2fe);
-        }
-
         .key-display {
             background: rgba(79, 172, 254, 0.1);
             border: 1px solid #4facfe;
@@ -269,7 +219,6 @@
             color: #4facfe;
             font-family: monospace;
             letter-spacing: 2px;
-            word-break: break-all;
         }
 
         .copy-btn {
@@ -279,14 +228,28 @@
             padding: 8px 15px;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s;
         }
 
         .copy-btn:hover {
             background: rgba(79, 172, 254, 0.2);
         }
 
-        /* Responsive */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: #4facfe;
+            animation: spin 0.8s ease infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2rem;
@@ -308,85 +271,31 @@
             .key-text {
                 font-size: 1rem;
             }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Loading */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            border-top-color: #4facfe;
-            animation: spin 0.8s ease infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: rgba(79, 172, 254, 0.3);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(79, 172, 254, 0.5);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <h1>🚀 CTC HUB</h1>
-            <p>Painel de gerenciamento de keys - Sistema de ativação</p>
+            <p>Painel de gerenciamento de keys</p>
         </div>
 
-        <!-- Stats -->
         <div class="stats-grid" id="statsGrid">
             <div class="stat-card">
                 <div class="stat-number" id="statTotal">0</div>
-                <div class="stat-label">Total de Keys</div>
+                <div class="stat-label">Total</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number" id="statAtivas">0</div>
-                <div class="stat-label">Keys Ativas</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="statExpiradas">0</div>
-                <div class="stat-label">Keys Expiradas</div>
+                <div class="stat-label">Ativas</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number" id="statInativas">0</div>
-                <div class="stat-label">Keys Inativas</div>
+                <div class="stat-label">Inativas</div>
             </div>
         </div>
 
-        <!-- Gerar Key -->
         <div class="card">
             <h2>🔑 Gerar Nova Key</h2>
             <div class="form-group">
@@ -394,31 +303,18 @@
                     <option value="free">FREE</option>
                     <option value="vip">VIP</option>
                     <option value="premium">PREMIUM</option>
-                    <option value="teste">TESTE</option>
                 </select>
-                <input type="number" id="keyDays" placeholder="Dias de validade" value="30" min="1" max="365">
+                <input type="number" id="keyDays" placeholder="Dias" value="30" min="1" max="365">
                 <input type="text" id="keyUser" placeholder="Usuário (opcional)">
-                <button class="btn btn-success" onclick="gerarKey()">✨ Gerar Key</button>
+                <button class="btn btn-success" onclick="gerarKey()">✨ Gerar</button>
             </div>
-            <div id="keyResult" style="display: none;"></div>
+            <div id="keyResult"></div>
         </div>
 
-        <!-- Verificar Key -->
-        <div class="card">
-            <h2>🔍 Verificar Key</h2>
-            <div class="form-group">
-                <input type="text" id="verifyKey" placeholder="Digite a key para verificar...">
-                <button class="btn btn-primary" onclick="verificarKey()">🔎 Verificar</button>
-            </div>
-            <div id="verifyResult"></div>
-        </div>
-
-        <!-- Lista de Keys -->
         <div class="card">
             <h2>📋 Lista de Keys</h2>
-            <div class="form-group" style="margin-bottom: 15px;">
+            <div style="margin-bottom: 15px;">
                 <button class="btn btn-primary" onclick="carregarKeys()">🔄 Atualizar</button>
-                <button class="btn btn-danger" onclick="limparTabela()">🗑️ Limpar</button>
             </div>
             <div class="table-container">
                 <table>
@@ -434,7 +330,7 @@
                     </thead>
                     <tbody id="keysTable">
                         <tr>
-                            <td colspan="6" style="text-align: center; color: #666;">Carregando keys...</td>
+                            <td colspan="6" style="text-align: center; color: #666;">Carregando...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -442,26 +338,8 @@
         </div>
     </div>
 
-    <!-- Toast -->
-    <div class="toast" id="toast"></div>
-
     <script>
-        const API_URL = 'http://localhost:3000/api';
-        let keysCache = [];
-
-        // =============================================
-        // TOAST NOTIFICATIONS
-        // =============================================
-        function showToast(message, type = 'info') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast toast-${type} show`;
-            
-            clearTimeout(toast.timeout);
-            toast.timeout = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 4000);
-        }
+        const API_URL = '/api';
 
         // =============================================
         // CARREGAR ESTATÍSTICAS
@@ -470,15 +348,13 @@
             try {
                 const response = await fetch(`${API_URL}/stats`);
                 const data = await response.json();
-                
                 if (data.success) {
-                    document.getElementById('statTotal').textContent = data.stats.total;
-                    document.getElementById('statAtivas').textContent = data.stats.ativas;
-                    document.getElementById('statExpiradas').textContent = data.stats.expiradas;
-                    document.getElementById('statInativas').textContent = data.stats.inativas;
+                    document.getElementById('statTotal').textContent = data.stats.total || 0;
+                    document.getElementById('statAtivas').textContent = data.stats.ativas || 0;
+                    document.getElementById('statInativas').textContent = data.stats.inativas || 0;
                 }
             } catch (error) {
-                console.error('Erro ao carregar stats:', error);
+                console.error('Erro:', error);
             }
         }
 
@@ -489,60 +365,51 @@
             try {
                 const response = await fetch(`${API_URL}/keys`);
                 const data = await response.json();
-                
+
                 if (data.success) {
-                    keysCache = data.keys;
-                    renderizarTabela(keysCache);
+                    const tbody = document.getElementById('keysTable');
+
+                    if (!data.keys || data.keys.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #666;">Nenhuma key</td></tr>';
+                        return;
+                    }
+
+                    const hoje = new Date().toISOString().split('T')[0];
+
+                    tbody.innerHTML = data.keys.map(k => {
+                        const expirada = hoje > k.validade;
+                        let statusClass = 'status-ativo';
+                        let statusText = '✅ Ativa';
+
+                        if (!k.ativo) {
+                            statusClass = 'status-inativo';
+                            statusText = '❌ Inativa';
+                        } else if (expirada) {
+                            statusClass = 'status-expirado';
+                            statusText = '⏰ Expirada';
+                        }
+
+                        return `
+                            <tr>
+                                <td><code style="color: #4facfe;">${k.key}</code></td>
+                                <td><span style="text-transform: uppercase;">${k.tipo}</span></td>
+                                <td>${k.usuario || '-'}</td>
+                                <td>${k.validade}</td>
+                                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                                <td>
+                                    ${k.ativo ? 
+                                        `<button class="btn btn-danger" onclick="desativarKey('${k.key}')" style="padding: 5px 10px; font-size: 0.8rem;">Desativar</button>` :
+                                        `<button class="btn btn-success" onclick="ativarKey('${k.key}')" style="padding: 5px 10px; font-size: 0.8rem;">Ativar</button>`
+                                    }
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
                 }
             } catch (error) {
-                console.error('Erro ao carregar keys:', error);
-                showToast('Erro ao carregar lista de keys', 'error');
+                console.error('Erro:', error);
+                document.getElementById('keysTable').innerHTML = '<tr><td colspan="6" style="text-align: center; color: #f5576c;">❌ Erro ao carregar</td></tr>';
             }
-        }
-
-        function renderizarTabela(keys) {
-            const tbody = document.getElementById('keysTable');
-            
-            if (keys.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" style="text-align: center; color: #666;">Nenhuma key encontrada</td>
-                    </tr>
-                `;
-                return;
-            }
-
-            const hoje = new Date().toISOString().split('T')[0];
-            
-            tbody.innerHTML = keys.map(k => {
-                const expirada = hoje > k.validade;
-                let statusClass = 'status-ativo';
-                let statusText = '✅ Ativa';
-                
-                if (!k.ativo) {
-                    statusClass = 'status-inativo';
-                    statusText = '❌ Inativa';
-                } else if (expirada) {
-                    statusClass = 'status-expirado';
-                    statusText = '⏰ Expirada';
-                }
-                
-                return `
-                    <tr>
-                        <td><code style="font-family: monospace; color: #4facfe;">${k.key}</code></td>
-                        <td><span style="text-transform: uppercase;">${k.tipo}</span></td>
-                        <td>${k.usuario || '-'}</td>
-                        <td>${k.validade}</td>
-                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                        <td>
-                            ${k.ativo && !expirada ? 
-                                `<button class="btn btn-danger" onclick="desativarKey('${k.key}')" style="padding: 5px 10px; font-size: 0.8rem;">Desativar</button>` :
-                                `<button class="btn btn-success" onclick="ativarKey('${k.key}')" style="padding: 5px 10px; font-size: 0.8rem;">Ativar</button>`
-                            }
-                        </td>
-                    </tr>
-                `;
-            }).join('');
         }
 
         // =============================================
@@ -554,7 +421,7 @@
             const usuario = document.getElementById('keyUser').value || 'anonimo';
 
             if (!dias || dias < 1) {
-                showToast('Informe uma quantidade de dias válida', 'error');
+                alert('⚠️ Informe uma quantidade de dias válida!');
                 return;
             }
 
@@ -565,21 +432,26 @@
             try {
                 const response = await fetch(`${API_URL}/generate`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tipo, dias: parseInt(dias), usuario })
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        tipo: tipo,
+                        dias: parseInt(dias),
+                        usuario: usuario
+                    })
                 });
 
                 const data = await response.json();
 
                 if (data.success) {
                     const resultDiv = document.getElementById('keyResult');
-                    resultDiv.style.display = 'block';
                     resultDiv.innerHTML = `
                         <div class="key-display">
                             <div>
-                                <span style="color: #aaa;">🔑 Nova Key gerada:</span>
+                                <span style="color: #aaa;">🔑 Nova Key:</span>
                                 <div class="key-text">${data.key}</div>
-                                <div style="margin-top: 5px; color: #aaa; font-size: 0.9rem;">
+                                <div style="font-size: 0.9rem; color: #aaa; margin-top: 5px;">
                                     Tipo: ${data.info.tipo.toUpperCase()} | 
                                     Validade: ${data.info.validade} | 
                                     Usuário: ${data.info.usuario}
@@ -588,71 +460,26 @@
                             <button class="copy-btn" onclick="copiarKey('${data.key}')">📋 Copiar</button>
                         </div>
                     `;
-                    
-                    showToast(`✅ Key gerada com sucesso! ${data.key}`, 'success');
+                    alert(`✅ Key gerada: ${data.key}`);
                     carregarKeys();
                     carregarStats();
                 } else {
-                    showToast(data.message || 'Erro ao gerar key', 'error');
+                    alert('❌ ' + (data.message || 'Erro ao gerar key'));
                 }
             } catch (error) {
-                console.error('Erro ao gerar key:', error);
-                showToast('Erro ao gerar key', 'error');
+                console.error('Erro:', error);
+                alert('❌ Erro ao gerar key: ' + error.message);
             }
 
-            btn.textContent = '✨ Gerar Key';
+            btn.textContent = '✨ Gerar';
             btn.disabled = false;
-        }
-
-        // =============================================
-        // VERIFICAR KEY
-        // =============================================
-        async function verificarKey() {
-            const key = document.getElementById('verifyKey').value.trim();
-            
-            if (!key) {
-                showToast('Digite uma key para verificar', 'error');
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_URL}/verify`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ key })
-                });
-
-                const data = await response.json();
-                const resultDiv = document.getElementById('verifyResult');
-
-                if (data.success) {
-                    resultDiv.innerHTML = `
-                        <div style="background: rgba(67, 233, 123, 0.1); border: 1px solid #43e97b; border-radius: 10px; padding: 15px; margin-top: 10px;">
-                            <div style="color: #43e97b; font-weight: bold;">✅ ${data.message}</div>
-                            <div style="color: #aaa; margin-top: 5px;">Tipo: ${data.tipo.toUpperCase()}</div>
-                            <div style="color: #aaa; font-size: 0.9rem;">Key: ${data.key}</div>
-                        </div>
-                    `;
-                    showToast('✅ Key válida!', 'success');
-                } else {
-                    resultDiv.innerHTML = `
-                        <div style="background: rgba(245, 87, 108, 0.1); border: 1px solid #f5576c; border-radius: 10px; padding: 15px; margin-top: 10px;">
-                            <div style="color: #f5576c; font-weight: bold;">❌ ${data.message}</div>
-                        </div>
-                    `;
-                    showToast('❌ ' + data.message, 'error');
-                }
-            } catch (error) {
-                console.error('Erro ao verificar key:', error);
-                showToast('Erro ao verificar key', 'error');
-            }
         }
 
         // =============================================
         // DESATIVAR/ATIVAR KEY
         // =============================================
         async function desativarKey(key) {
-            if (!confirm(`Deseja desativar a key ${key}?`)) return;
+            if (!confirm(`Desativar key ${key}?`)) return;
 
             try {
                 const response = await fetch(`${API_URL}/deactivate`, {
@@ -660,19 +487,17 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ key })
                 });
-
                 const data = await response.json();
-                
+
                 if (data.success) {
-                    showToast('✅ Key desativada com sucesso', 'success');
+                    alert('✅ Key desativada!');
                     carregarKeys();
                     carregarStats();
                 } else {
-                    showToast(data.message || 'Erro ao desativar key', 'error');
+                    alert('❌ ' + data.message);
                 }
             } catch (error) {
-                console.error('Erro ao desativar key:', error);
-                showToast('Erro ao desativar key', 'error');
+                alert('❌ Erro ao desativar');
             }
         }
 
@@ -683,19 +508,17 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ key })
                 });
-
                 const data = await response.json();
-                
+
                 if (data.success) {
-                    showToast('✅ Key ativada com sucesso', 'success');
+                    alert('✅ Key ativada!');
                     carregarKeys();
                     carregarStats();
                 } else {
-                    showToast(data.message || 'Erro ao ativar key', 'error');
+                    alert('❌ ' + data.message);
                 }
             } catch (error) {
-                console.error('Erro ao ativar key:', error);
-                showToast('Erro ao ativar key', 'error');
+                alert('❌ Erro ao ativar');
             }
         }
 
@@ -704,43 +527,23 @@
         // =============================================
         function copiarKey(key) {
             navigator.clipboard.writeText(key).then(() => {
-                showToast('📋 Key copiada!', 'info');
+                alert('📋 Key copiada!');
             }).catch(() => {
-                // Fallback
                 const textarea = document.createElement('textarea');
                 textarea.value = key;
                 document.body.appendChild(textarea);
                 textarea.select();
                 document.execCommand('copy');
                 textarea.remove();
-                showToast('📋 Key copiada!', 'info');
+                alert('📋 Key copiada!');
             });
         }
 
-        function limparTabela() {
-            document.getElementById('keysTable').innerHTML = `
-                <tr>
-                    <td colspan="6" style="text-align: center; color: #666;">Lista limpa</td>
-                </tr>
-            `;
-        }
-
         // =============================================
-        // ENTER KEY PARA VERIFICAR
-        // =============================================
-        document.getElementById('verifyKey').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                verificarKey();
-            }
-        });
-
-        // =============================================
-        // INICIALIZAÇÃO
+        // INICIALIZAR
         // =============================================
         carregarStats();
         carregarKeys();
-
-        // Atualizar automático a cada 30 segundos
         setInterval(() => {
             carregarStats();
             carregarKeys();
